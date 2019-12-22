@@ -5,10 +5,15 @@ import Encrypt from '../screens/Encrypt';
 
 
 const app = createStackNavigator({
-    home: { screen: Home },
-    encrypt: { screen: Encrypt }
-},{
-    headerMode: "none"
+    home: { screen: Home, navigationOptions: ({ navigation }) => ({
+        header:null
+      }) 
+    },
+    encrypt: { screen: Encrypt, navigationOptions: ({ navigation }) => ({
+        title: 'Encrypt Media',
+        headerStyle:{height:70}
+    })  
+    }
 });
 const AppContainer = createAppContainer(app);
 // Now AppContainer is the main component for React to render
