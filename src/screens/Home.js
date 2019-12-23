@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React from 'react';
 import {
   SafeAreaView,
@@ -30,7 +22,7 @@ const Home: () => React$Node = () => {
               </View>
               <View style={{flex:2}}>
                 <Button style={styles.buttonStyle} onPress={()=>NavigationService.navigate('encrypt')} block><Text style={styles.textStyle}>Encode</Text></Button>
-                <Button style={styles.buttonStyle}  block><Text style={styles.textStyle}>Decrypt</Text></Button>
+                <Button style={styles.buttonStyle} onPress={()=>NavigationService.navigate('decrypt')}  block><Text style={styles.textStyle}>Decrypt</Text></Button>
               </View>
           </View>
        

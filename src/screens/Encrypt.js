@@ -14,6 +14,8 @@ import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios';
 import RNFetchBlob from 'rn-fetch-blob';
 import Video from 'react-native-video';
+import { ScrollView } from 'react-native-gesture-handler';
+import { BASE_URL } from '../config/Globals';
 
 const Encrypt: () => React$Node = () => {
     const [visible,setVisible] = useState(false);
@@ -57,15 +59,27 @@ const Encrypt: () => React$Node = () => {
     function sendRequest(){
         setLoading(true);
         if(message && password){
-          var data = new FormData();
-          data.append('password',password);
-          data.append('msg',message);
-          data.append('encImage',image);
-          axios.post('http://192.168.100.36:8000/api/imgEncrypt',data).then(response =>{
-              download(response.data.encImage)
-              setLoading(false);
-          })
-          .catch(error =>  {console.log(error)});
+          if(isVideo){
+            var data = new FormData();
+            data.append('password',password);
+            data.append('msg',message);
+            data.append('encVideo',image);
+            axios.post(`${BASE_URL}/api/vidEncrypt`,data).then(response =>{
+                download(response.data.encImage)
+                setLoading(false);
+            })
+            .catch(error =>  {console.log(error)});
+          }else{
+            var data = new FormData();
+            data.append('password',password);
+            data.append('msg',message);
+            data.append('encImage',image);
+            axios.post(`${BASE_URL}/api/imgEncrypt`,data).then(response =>{
+                download(response.data.encImage)
+                setLoading(false);
+            })
+            .catch(error =>  {console.log(error)});
+          }
         }else{
           Alert.alert('Please Fill All fields')
         }
@@ -123,7 +137,9 @@ const Encrypt: () => React$Node = () => {
     }
 
     return (
-
+    <>
+    <View style={{flex:8}}>
+    <ScrollView>
     <View style={styles.body}>
         <View style={{flex:3,justifyContent:'center'}}>
             <TouchableOpacity onPress={()=>{
@@ -140,9 +156,7 @@ const Encrypt: () => React$Node = () => {
               <Input value={password} onChangeText={(value)=> setPassword(value)} />
             </Item>
         </View>
-        <View style={{flex:1,justifyContent:'center'}}>
-        <Button onPress={()=>sendRequest()} style={styles.buttonStyle} block>{loading?<Spinner color={"white"}/>:<Text style={styles.textStyle}>Submit</Text>}</Button>
-        </View>
+        
         <Modal 
             transparent={true}
             animationType={"fade"}
@@ -162,6 +176,13 @@ const Encrypt: () => React$Node = () => {
         </Modal>
         
     </View>
+    </ScrollView>
+      <View style={{height:70,paddingHorizontal:20}}>
+        <Button disabled={!message && !password} onPress={()=>sendRequest()} style={styles.buttonStyle} block>{loading?<Spinner color={"white"}/>:<Text style={styles.textStyle}>Encrypt</Text>}</Button>
+        </View>
+    </View>
+    
+    </>
   );
 };
 

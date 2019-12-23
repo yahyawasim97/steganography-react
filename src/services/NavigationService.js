@@ -1,5 +1,5 @@
 import { NavigationActions } from 'react-navigation';
-
+//Navigation Service to handle navigation without props
 let _navigator;
 
 function setTopLevelNavigator(navigatorRef) {
